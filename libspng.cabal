@@ -1,0 +1,42 @@
+cabal-version:      2.4
+name:               libspng
+version:            0.1.0.0
+
+description:    Please see the README on GitHub at <https://github.com/burningwitness/libspng#readme>
+homepage:       https://github.com/BurningWitness/libspng#readme
+bug-reports:    https://github.com/BurningWitness/libspng/issues
+author:         Oleksii Divak
+maintainer:     Oleksii Divak <frozenwitness@gmail.com>
+category:       Codec, Graphics, Image
+copyright:      2022 Oleksii Divak
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+synopsis:       Haskell bindings for libspng
+
+source-repository head
+  type: git
+  location: git://github.com/burningwitness/libspng.git
+
+library
+  exposed-modules: Codec.Image.PNG.Simple
+                   Codec.Image.PNG.Simple.Error.Internal
+                   Codec.Image.PNG.Simple.Internal
+
+  reexported-modules: Foreign.Storable.Offset
+
+  hs-source-dirs: src
+
+  include-dirs: c
+
+  c-sources: ./c/spng.c
+
+  install-includes: ./c/spng.h
+
+  build-depends: base >= 4.10 && < 4.17
+               , bytestring >= 0.10 && < 0.12
+               , storable-offset >= 0.1 && < 0.2
+
+  default-language: Haskell2010
+
+  ghc-options: -Wall
