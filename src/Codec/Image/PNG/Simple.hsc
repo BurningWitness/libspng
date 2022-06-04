@@ -6,9 +6,23 @@
            , ScopedTypeVariables
            , TypeApplications #-}
 
+{-| Documentation for libspng can be found [here](https://libspng.org/docs/api/).
+ 
+    Basic C example can be viewed [here](https://libspng.org/docs/usage/);
+    a more complex Haskell example is
+    [here](https://github.com/BurningWitness/libspng/app/example/Main.hs).
+
+    Helper functions are provided right after 'spng_ctx_new', 'spng_set_png_stream',
+    'spng_set_option' and 'spng_get_option'.
+ -}
+
 module Codec.Image.PNG.Simple
-  ( -- ** 
+  ( -- ** Error type
     SpngError (..)
+    -- ** Version
+  , pattern SPNG_VERSION_MAJOR
+  , pattern SPNG_VERSION_MINOR
+  , pattern SPNG_VERSION_PATCH
     -- ** spng_errno
   , SpngErrNo
   , pattern SPNG_IO_ERROR
@@ -254,135 +268,138 @@ module Codec.Image.PNG.Simple
   , spng_ctx_new2
     -- ** spng_ctx_free
   , spng_ctx_free
-    -- * spng_set_png_buffer
+    -- ** spng_set_png_buffer
   , spng_set_png_buffer
-    -- * spng_set_png_stream
-  , mkReadHandle
-  , mkWriteHandle
+    -- ** spng_set_png_stream
   , spng_set_png_stream
-    -- * spng_set_png_file
+  , hReadFn
+  , hWriteFn
+  , MemRead (..)
+  , mkMemRead
+  , memReadFn
+    -- ** spng_set_png_file
   , spng_set_png_file
-    -- * spng_get_png_buffer
+    -- ** spng_get_png_buffer
   , spng_get_png_buffer
-    -- * spng_set_image_limits
+    -- ** spng_set_image_limits
   , spng_set_image_limits
-    -- * spng_get_image_limits
+    -- ** spng_get_image_limits
   , spng_get_image_limits
-    -- * spng_set_chunk_limits
+    -- ** spng_set_chunk_limits
   , spng_set_chunk_limits
-    -- * spng_get_chunk_limits
+    -- ** spng_get_chunk_limits
   , spng_get_chunk_limits
-    -- * spng_set_crc_action
+    -- ** spng_set_crc_action
   , spng_set_crc_action
-    -- * spng_set_option
+    -- ** spng_set_option
   , spng_set_option
   , spng_set_keep_unknown_chunks
   , spng_set_filter_choice
   , spng_set_encode_to_buffer
-    -- * spng_get_option
+    -- ** spng_get_option
   , spng_get_option
   , spng_get_keep_unknown_chunks
   , spng_get_filter_choice
   , spng_get_encode_to_buffer   
-    -- * spng_decoded_image_size
+    -- ** spng_decoded_image_size
   , spng_decoded_image_size
-    -- * spng_decode_image
+    -- ** spng_decode_image
   , spng_decode_image
-    -- * spng_decode_scanline
+    -- ** spng_decode_scanline
   , spng_decode_scanline
-    -- * spng_decode_row
+    -- ** spng_decode_row
   , spng_decode_row
-    -- * spng_decode_chunks
+    -- ** spng_decode_chunks
   , spng_decode_chunks
-    -- * spng_get_row_info
+    -- ** spng_get_row_info
   , spng_get_row_info
-    -- * spng_encode_image
+    -- ** spng_encode_image
   , spng_encode_image
-    -- * spng_encode_scanline
+    -- ** spng_encode_scanline
   , spng_encode_scanline
-    -- * spng_encode_row
+    -- ** spng_encode_row
   , spng_encode_row
-    -- * spng_encode_chunks
+    -- ** spng_encode_chunks
   , spng_encode_chunks
-    -- * spng_get_ihdr
+    -- ** spng_get_ihdr
   , spng_get_ihdr
-    -- * spng_get_plte
+    -- ** spng_get_plte
   , spng_get_plte
-    -- * spng_get_trns
+    -- ** spng_get_trns
   , spng_get_trns
-    -- * spng_get_chrm
+    -- ** spng_get_chrm
   , spng_get_chrm
-    -- * spng_get_chrm_int
+    -- ** spng_get_chrm_int
   , spng_get_chrm_int
-    -- * spng_get_gama
+    -- ** spng_get_gama
   , spng_get_gama
-    -- * spng_get_gama_int
+    -- ** spng_get_gama_int
   , spng_get_gama_int
-    -- * spng_get_iccp
+    -- ** spng_get_iccp
   , spng_get_iccp
-    -- * spng_get_sbit
+    -- ** spng_get_sbit
   , spng_get_sbit
-    -- * spng_get_srgb
+    -- ** spng_get_srgb
   , spng_get_srgb
-    -- * spng_get_text
+    -- ** spng_get_text
   , spng_get_text
-    -- * spng_get_bkgd
+    -- ** spng_get_bkgd
   , spng_get_bkgd
-    -- * spng_get_hist
+    -- ** spng_get_hist
   , spng_get_hist
-    -- * spng_get_phys
+    -- ** spng_get_phys
   , spng_get_phys
-    -- * spng_get_splt
+    -- ** spng_get_splt
   , spng_get_splt
-    -- * spng_get_time
+    -- ** spng_get_time
   , spng_get_time
-    -- * spng_get_unknown_chunks
+    -- ** spng_get_unknown_chunks
   , spng_get_unknown_chunks
-    -- * spng_get_offs
+    -- ** spng_get_offs
   , spng_get_offs
-    -- * spng_get_exif
+    -- ** spng_get_exif
   , spng_get_exif
-    -- * spng_set_ihdr
+    -- ** spng_set_ihdr
   , spng_set_ihdr
-    -- * spng_set_plte
+    -- ** spng_set_plte
   , spng_set_plte
-    -- * spng_set_trns
+    -- ** spng_set_trns
   , spng_set_trns
-    -- * spng_set_chrm
+    -- ** spng_set_chrm
   , spng_set_chrm
-    -- * spng_set_chrm_int
+    -- ** spng_set_chrm_int
   , spng_set_chrm_int
-    -- * spng_set_gama
+    -- ** spng_set_gama
   , spng_set_gama
-    -- * spng_set_gama_int
+    -- ** spng_set_gama_int
   , spng_set_gama_int
-    -- * spng_set_iccp
+    -- ** spng_set_iccp
   , spng_set_iccp
-    -- * spng_set_sbit
+    -- ** spng_set_sbit
   , spng_set_sbit
-    -- * spng_set_srgb
+    -- ** spng_set_srgb
   , spng_set_srgb
-    -- * spng_set_text
+    -- ** spng_set_text
   , spng_set_text
-    -- * spng_set_bkgd
+    -- ** spng_set_bkgd
   , spng_set_bkgd
-    -- * spng_set_hist
+    -- ** spng_set_hist
   , spng_set_hist
-    -- * spng_set_phys
+    -- ** spng_set_phys
   , spng_set_phys
-    -- * spng_set_splt
+    -- ** spng_set_splt
   , spng_set_splt
-    -- * spng_set_time
+    -- ** spng_set_time
   , spng_set_time
-    -- * spng_set_unknown_chunks
+    -- ** spng_set_unknown_chunks
   , spng_set_unknown_chunks
-    -- * spng_set_offs
+    -- ** spng_set_offs
   , spng_set_offs
-    -- * spng_set_exif
+    -- ** spng_set_exif
   , spng_set_exif
-    -- * spng_strerror
+    -- ** spng_strerror
   , spng_strerror
-    -- * spng_version_string
+    -- ** spng_version_string
   , spng_version_string
   ) where
 
@@ -397,8 +414,10 @@ import           Data.Word
 import           Foreign.C.Types
 import           Foreign.Marshal.Alloc
 import           Foreign.Marshal.Array
+import           Foreign.Marshal.Utils
 import           Foreign.Ptr
 import           Foreign.Storable
+import           Foreign.Storable.Offset
 import           System.IO
 import           System.IO.Unsafe
 
@@ -407,6 +426,8 @@ import           System.IO.Unsafe
 spng_ctx_new :: SpngCtxFlags -> IO (Ptr SpngCtx)
 spng_ctx_new (SpngCtxFlags flags) = spng_ctx_new' $ fromIntegral flags
 
+-- | @'spng_ctx_with' flags f@ creates a new context and frees it after @f@ completes.
+--   The passed pointer therefore must not be used outside of @f@.
 spng_ctx_with :: SpngCtxFlags -> (Ptr SpngCtx -> IO a) -> IO a
 spng_ctx_with flags = bracket (spng_ctx_new flags) spng_ctx_free
 
@@ -417,34 +438,91 @@ spng_set_png_buffer
   -> Ptr ()         -- ^ const buf
   -> #{type size_t} -- ^ size
   -> IO ()
-spng_set_png_buffer = wrapError spng_set_png_buffer'
+spng_set_png_buffer ctx buf siz = wrapError $ spng_set_png_buffer' ctx buf siz
 
+-- | 'SpngReadFn', 'SpngWriteFn' and 'SpngRwFn' are interchangeable.
 spng_set_png_stream
   :: Ptr SpngCtx     -- ^ ctx
   -> FunPtr SpngRwFn -- ^ rw_func
   -> Ptr ()          -- ^ user
   -> IO ()
-spng_set_png_stream = wrapError spng_set_png_stream'
+spng_set_png_stream ctx rw user = wrapError $ spng_set_png_stream' ctx rw user
 
-mkReadHandle :: Handle -> IO (FunPtr SpngReadFn)
-mkReadHandle h = mkSpngReadFn $ \_ _ src len ->
-                   handle (\(_ :: IOException) -> return SPNG_IO_ERROR) $ do
-                     n <- hGetBuf h src (fromIntegral len)
-                     case n of
-                       0 -> return SPNG_IO_EOF
-                       _ -> return SPNG_OK
+-- | Creates 'SpngReadFn' from a 'Handle'.
+--
+--   Resulting function never accesses passed 'SpngCtx' or the user pointer.
+hReadFn :: Handle -> SpngReadFn
+hReadFn h = \_ _ dest len ->
+  handle (\(_ :: IOException) -> return SPNG_IO_ERROR) $ do
+    n <- hGetBuf h dest (fromIntegral len)
+    case n of
+      0 -> return SPNG_IO_EOF
+      _ -> return SPNG_OK
 
-mkWriteHandle :: Handle -> IO (FunPtr SpngWriteFn)
-mkWriteHandle h = mkSpngWriteFn $ \_ _ src len ->
-                    handle (\(_ :: IOException) -> return SPNG_IO_ERROR) $ do
-                      hPutBuf h src (fromIntegral len)
-                      return SPNG_OK
+-- | Creates 'SpngWriteFn' from a 'Handle'.
+--
+--   Resulting function never accesses passed 'SpngCtx' or the user pointer.
+hWriteFn :: Handle -> SpngWriteFn
+hWriteFn h = \_ _ src len ->
+  handle (\(_ :: IOException) -> return SPNG_IO_ERROR) $ do
+    hPutBuf h src (fromIntegral len)
+    return SPNG_OK
+
+-- | Intermediate data structure for reading PNG files stored in memory.
+data MemRead =
+       MemRead
+         { mrPtr    :: Ptr ()         -- ^ points to the start of the image
+         , mrLen    :: #{type size_t} -- ^ total length of the image
+         , mrOffset :: #{type size_t} -- ^ current offset
+         }
+
+instance Offset "mrPtr"    MemRead where rawOffset = 0
+instance Offset "mrLen"    MemRead where rawOffset = sizeOf (undefined :: Ptr ())
+instance Offset "mrOffset" MemRead where
+  rawOffset = sizeOf (undefined :: Ptr ()) + sizeOf (undefined :: #{type size_t})
+
+instance Storable MemRead where
+  sizeOf _    = sizeOf (undefined :: Ptr ()) + 2 * sizeOf (undefined :: #{type size_t})
+  alignment _ = alignment (undefined :: Ptr ())
+
+  peek ptr =
+    MemRead
+      <$> peek (offset @"mrPtr"    ptr)
+      <*> peek (offset @"mrLen"    ptr)
+      <*> peek (offset @"mrOffset" ptr)
+
+  poke ptr val = do
+    pokeField @"mrPtr"    ptr val
+    pokeField @"mrLen"    ptr val
+    pokeField @"mrOffset" ptr val
+
+-- | Smart constructor for 'MemRead'.
+mkMemRead :: Ptr a -> #{type size_t} -> MemRead
+mkMemRead ptr len = MemRead (castPtr ptr) len 0
+
+-- | Creates 'SpngWriteFn' from a pointer to 'MemRead'.
+--
+--   Resulting function never accesses passed 'SpngCtx' or the user pointer.
+memReadFn :: Ptr MemRead -> SpngReadFn
+memReadFn mem = \_ _ dest len -> do
+  handle (\(_ :: IOException) -> return SPNG_IO_ERROR) $ do
+    MemRead src slen off <- peek mem
+    case () of
+      () | off >= slen      -> return SPNG_IO_EOF
+         | off + len > slen -> do
+             copyBytes dest (plusPtr src $ fromIntegral off) (fromIntegral $ off - len)
+             poke mem $ MemRead src slen slen
+             return SPNG_OK
+         | otherwise        -> do
+             copyBytes dest (plusPtr src $ fromIntegral off) (fromIntegral len)
+             poke mem $ MemRead src slen (off + len)
+             return SPNG_OK
 
 spng_set_png_file
   :: Ptr SpngCtx  -- ^ ctx
   -> Ptr CFile    -- ^ file
   -> IO ()
-spng_set_png_file = wrapError spng_set_png_file'
+spng_set_png_file ctx file = wrapError $ spng_set_png_file' ctx file
 
 spng_get_png_buffer
   :: Ptr SpngCtx                                    -- ^ ctx
@@ -464,14 +542,15 @@ spng_set_image_limits
   -> #{type uint32_t} -- ^ width
   -> #{type uint32_t} -- ^ height
   -> IO ()
-spng_set_image_limits = wrapError spng_set_image_limits'
+spng_set_image_limits ctx width height =
+  wrapError $ spng_set_image_limits' ctx width height
 
 spng_get_image_limits
   :: Ptr SpngCtx                             -- ^ ctx
   -> IO (#{type uint32_t}, #{type uint32_t}) -- ^ (width, height)
 spng_get_image_limits ctx = do
   allocaArray 2 $ \ptrX -> do
-    let ptrY = advancePtr ptrY 1
+    let ptrY = advancePtr ptrX 1
     wrapError $ spng_get_image_limits' ctx ptrX ptrY
     (,) <$> peek ptrX <*> peek ptrY
 
@@ -480,14 +559,15 @@ spng_set_chunk_limits
   -> #{type size_t} -- ^ chunk_size
   -> #{type size_t} -- ^ cache_size
   -> IO ()
-spng_set_chunk_limits = wrapError spng_set_chunk_limits'
+spng_set_chunk_limits ctx chunk cache =
+  wrapError $ spng_set_chunk_limits' ctx chunk cache
 
 spng_get_chunk_limits
   :: Ptr SpngCtx                         -- ^ ctx
   -> IO (#{type size_t}, #{type size_t}) -- ^ (chunk_size, cache_size)
 spng_get_chunk_limits ctx = do
   allocaArray 2 $ \ptrX -> do
-    let ptrY = advancePtr ptrY 1
+    let ptrY = advancePtr ptrX 1
     wrapError $ spng_get_chunk_limits' ctx ptrX ptrY
     (,) <$> peek ptrX <*> peek ptrY
 
@@ -506,14 +586,17 @@ spng_set_option
   -> IO ()
 spng_set_option ctx option = wrapError . spng_set_option' ctx option
 
+-- | 'spng_set_option' applied to 'SPNG_KEEP_UNKNOWN_CHUNKS'.
 spng_set_keep_unknown_chunks :: Ptr SpngCtx -> Bool -> IO ()
 spng_set_keep_unknown_chunks ctx val =
   spng_set_option ctx SPNG_KEEP_UNKNOWN_CHUNKS $ if val then 1 else 0
 
+-- | 'spng_set_option' applied to 'SPNG_FILTER_CHOICE'.
 spng_set_filter_choice :: Ptr SpngCtx -> SpngFilterChoice -> IO ()
 spng_set_filter_choice ctx (SpngFilterChoice flags) =
   spng_set_option ctx SPNG_FILTER_CHOICE $ fromIntegral flags
 
+-- | 'spng_set_option' applied to 'SPNG_ENCODE_TO_BUFFER'.
 spng_set_encode_to_buffer :: Ptr SpngCtx -> Bool -> IO ()
 spng_set_encode_to_buffer ctx val =
   spng_set_option ctx SPNG_ENCODE_TO_BUFFER $ if val then 1 else 0
@@ -527,15 +610,18 @@ spng_get_option ctx option =
     wrapError $ spng_get_option' ctx option ptr
     peek ptr
 
+-- | 'spng_get_option' applied to 'SPNG_KEEP_UNKNOWN_CHUNKS'.
 spng_get_keep_unknown_chunks :: Ptr SpngCtx -> IO Bool
 spng_get_keep_unknown_chunks ctx = do
   res <- spng_get_option ctx SPNG_KEEP_UNKNOWN_CHUNKS
   return $ if res == 0 then False else True
 
+-- | 'spng_get_option' applied to 'SPNG_FILTER_CHOICE'.
 spng_get_filter_choice :: Ptr SpngCtx -> IO SpngFilterChoice
 spng_get_filter_choice ctx =
   SpngFilterChoice . fromIntegral <$> spng_get_option ctx SPNG_FILTER_CHOICE
 
+-- | 'spng_get_option' applied to 'SPNG_ENCODE_TO_BUFFER'.
 spng_get_encode_to_buffer :: Ptr SpngCtx -> IO Bool
 spng_get_encode_to_buffer ctx = do
   res <- spng_get_option ctx SPNG_ENCODE_TO_BUFFER

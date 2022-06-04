@@ -34,20 +34,12 @@ spng_strerror (SpngErrNo err) = unsafePerformIO $ do ver <- spng_strerror' err
                                                      unsafePackCString $ castPtr ver
 
 
-class Wrap f a | f -> a where
-  wrap :: (#{type int} -> IO ()) -> f -> a
-
-instance Wrap (IO #{type int}) (IO ()) where
-  wrap g f = g =<< f
-
-instance Wrap b c => Wrap (a -> b) (a -> c) where
-  wrap g f a = wrap g $ f a
-
-
 
 -- | Consumes the returned integer from an 'IO' action and
---   throws a 'SpngError' if it's not equal to 'SPNG_OK'. Lifts all the arguments.
-wrapError :: Wrap f a => f -> a
-wrapError = wrap $ \raw -> let res = SpngErrNo raw
-                           in when (res /= SPNG_OK) $
-                                throw $ SpngError res (spng_strerror res)
+--   throws a 'SpngError' if it's not equal to 'SPNG_OK'.
+wrapError :: IO #{type int} -> IO ()
+wrapError io = do
+  raw <- io
+  let res = SpngErrNo raw
+  when (res /= SPNG_OK) $
+    throw $ SpngError res (spng_strerror res)
