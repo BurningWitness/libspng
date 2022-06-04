@@ -11,8 +11,10 @@ import           Control.Exception
 import           Data.Colour
 import           Data.Colour.Names
 import           Data.Colour.SRGB
-import           Data.Functor ((<&>))
 import           Data.List (intercalate)
+#if __GLASGOW_HASKELL__ < 804
+import           Data.Semigroup
+#endif
 import           Data.Word
 import           Foreign.ForeignPtr
 import           Foreign.Marshal.Alloc
@@ -68,7 +70,7 @@ draw (Vec4 r g b a) =
 
 
 
--- | Direct file read. File is kept open until the end of the process.
+-- | Direct file read. File is kept open for the entire duration.
 direct :: Ptr SpngCtx -> FilePath -> IO a -> IO a
 direct ctx path io = do
   bracket (openBinaryFile path ReadMode) hClose $ \file -> do
@@ -111,8 +113,8 @@ core mode path = do
                       return (fptr, fromIntegral x, fromIntegral y :: Int)
 
   withForeignPtr fptr $ \ptr -> do
-    let offs = [0 .. y - 1] <&> \h ->
-                 [0 .. x - 1] <&> \w ->
+    let offs = flip fmap [0 .. y - 1] $ \h ->
+                 flip fmap [0 .. x - 1] $ \w ->
                    (w + h * x) * 4
 
     parts <- flip traverse offs $

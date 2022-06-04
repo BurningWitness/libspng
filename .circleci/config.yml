@@ -89,7 +89,7 @@ jobs:
           command: |
             stack init --resolver << parameters.resolver >> --omit-packages
             echo -e 'resolver: << parameters.resolver >>\n\nextra-deps:\n- storable-offset-0.1.0.0' > stack.yaml
-            stack build --no-terminal --flag example
+            stack build --no-terminal --flag libspng:example
       - save_cache:
           name: Cache
           key: macos-<< parameters.resolver >>-{{ checksum "libspng.cabal" }}
@@ -125,7 +125,7 @@ jobs:
           command: |
             stack init --resolver << parameters.resolver >> --omit-packages
             echo -e 'resolver: << parameters.resolver >>\n\nextra-deps:\n- storable-offset-0.1.0.0' > stack.yaml
-            stack build --no-run-tests --flag example
+            stack build --no-run-tests --flag libspng:example
       - save_cache:
           name: Cache
           key: windows-<< parameters.resolver >>-{{ checksum "libspng.cabal" }}

@@ -1,5 +1,6 @@
 {-# LANGUAGE DataKinds
            , ExplicitNamespaces
+           , FlexibleInstances
            , GADTs
            , MultiParamTypeClasses
            , PatternSynonyms
