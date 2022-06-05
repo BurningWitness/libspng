@@ -11,7 +11,7 @@
  
     Basic C example can be viewed [here](https://libspng.org/docs/usage/);
     a more complex Haskell example is
-    [here](https://github.com/BurningWitness/libspng/app/example/Main.hs).
+    [here](https://github.com/BurningWitness/libspng/blob/initial/app/example/Main.hsc).
 
     Helper functions are provided right after 'spng_ctx_new', 'spng_set_png_stream',
     'spng_set_option' and 'spng_get_option'.
