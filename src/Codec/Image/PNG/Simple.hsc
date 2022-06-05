@@ -26,158 +26,171 @@ module Codec.Image.PNG.Simple
   , pattern SPNG_VERSION_PATCH
     -- ** spng_errno
   , SpngErrNo
-  , pattern SPNG_IO_ERROR
-  , pattern SPNG_IO_EOF
-  , pattern SPNG_OK
-  , pattern SPNG_EINVAL
-  , pattern SPNG_EMEM
-  , pattern SPNG_EOVERFLOW
-  , pattern SPNG_ESIGNATURE
-  , pattern SPNG_EWIDTH
-  , pattern SPNG_EHEIGHT
-  , pattern SPNG_EUSER_WIDTH
-  , pattern SPNG_EUSER_HEIGHT
-  , pattern SPNG_EBIT_DEPTH
-  , pattern SPNG_ECOLOR_TYPE
-  , pattern SPNG_ECOMPRESSION_METHOD
-  , pattern SPNG_EFILTER_METHOD
-  , pattern SPNG_EINTERLACE_METHOD
-  , pattern SPNG_EIHDR_SIZE
-  , pattern SPNG_ENOIHDR
-  , pattern SPNG_ECHUNK_POS
-  , pattern SPNG_ECHUNK_SIZE
-  , pattern SPNG_ECHUNK_CRC
-  , pattern SPNG_ECHUNK_TYPE
-  , pattern SPNG_ECHUNK_UNKNOWN_CRITICAL
-  , pattern SPNG_EDUP_PLTE
-  , pattern SPNG_EDUP_CHRM
-  , pattern SPNG_EDUP_GAMA
-  , pattern SPNG_EDUP_ICCP
-  , pattern SPNG_EDUP_SBIT
-  , pattern SPNG_EDUP_SRGB
-  , pattern SPNG_EDUP_BKGD
-  , pattern SPNG_EDUP_HIST
-  , pattern SPNG_EDUP_TRNS
-  , pattern SPNG_EDUP_PHYS
-  , pattern SPNG_EDUP_TIME
-  , pattern SPNG_EDUP_OFFS
-  , pattern SPNG_EDUP_EXIF
-  , pattern SPNG_ECHRM
-  , pattern SPNG_EPLTE_IDX
-  , pattern SPNG_ETRNS_COLOR_TYPE
-  , pattern SPNG_ETRNS_NO_PLTE
-  , pattern SPNG_EGAMA
-  , pattern SPNG_EICCP_NAME
-  , pattern SPNG_EICCP_COMPRESSION_METHOD
-  , pattern SPNG_ESBIT
-  , pattern SPNG_ESRGB
-  , pattern SPNG_ETEXT
-  , pattern SPNG_ETEXT_KEYWORD
-  , pattern SPNG_EZTXT
-  , pattern SPNG_EZTXT_COMPRESSION_METHOD
-  , pattern SPNG_EITXT
-  , pattern SPNG_EITXT_COMPRESSION_FLAG
-  , pattern SPNG_EITXT_COMPRESSION_METHOD
-  , pattern SPNG_EITXT_LANG_TAG
-  , pattern SPNG_EITXT_TRANSLATED_KEY
-  , pattern SPNG_EBKGD_NO_PLTE
-  , pattern SPNG_EBKGD_PLTE_IDX
-  , pattern SPNG_EHIST_NO_PLTE
-  , pattern SPNG_EPHYS
-  , pattern SPNG_ESPLT_NAME
-  , pattern SPNG_ESPLT_DUP_NAME
-  , pattern SPNG_ESPLT_DEPTH
-  , pattern SPNG_ETIME
-  , pattern SPNG_EOFFS
-  , pattern SPNG_EEXIF
-  , pattern SPNG_EIDAT_TOO_SHORT
-  , pattern SPNG_EIDAT_STREAM
-  , pattern SPNG_EZLIB
-  , pattern SPNG_EFILTER
-  , pattern SPNG_EBUFSIZ
-  , pattern SPNG_EIO
-  , pattern SPNG_EOF
-  , pattern SPNG_EBUF_SET
-  , pattern SPNG_EBADSTATE
-  , pattern SPNG_EFMT
-  , pattern SPNG_EFLAGS
-  , pattern SPNG_ECHUNKAVAIL
-  , pattern SPNG_ENCODE_ONLY
-  , pattern SPNG_EOI
-  , pattern SPNG_ENOPLTE
-  , pattern SPNG_ECHUNK_LIMITS
-  , pattern SPNG_EZLIB_INIT
-  , pattern SPNG_ECHUNK_STDLEN
-  , pattern SPNG_EINTERNAL
-  , pattern SPNG_ECTXTYPE
-  , pattern SPNG_ENOSRC
-  , pattern SPNG_ENODST
-  , pattern SPNG_EOPSTATE
-  , pattern SPNG_ENOTFINAL
+      ( SPNG_IO_ERROR
+      , SPNG_IO_EOF
+      , SPNG_OK
+      , SPNG_EINVAL
+      , SPNG_EMEM
+      , SPNG_EOVERFLOW
+      , SPNG_ESIGNATURE
+      , SPNG_EWIDTH
+      , SPNG_EHEIGHT
+      , SPNG_EUSER_WIDTH
+      , SPNG_EUSER_HEIGHT
+      , SPNG_EBIT_DEPTH
+      , SPNG_ECOLOR_TYPE
+      , SPNG_ECOMPRESSION_METHOD
+      , SPNG_EFILTER_METHOD
+      , SPNG_EINTERLACE_METHOD
+      , SPNG_EIHDR_SIZE
+      , SPNG_ENOIHDR
+      , SPNG_ECHUNK_POS
+      , SPNG_ECHUNK_SIZE
+      , SPNG_ECHUNK_CRC
+      , SPNG_ECHUNK_TYPE
+      , SPNG_ECHUNK_UNKNOWN_CRITICAL
+      , SPNG_EDUP_PLTE
+      , SPNG_EDUP_CHRM
+      , SPNG_EDUP_GAMA
+      , SPNG_EDUP_ICCP
+      , SPNG_EDUP_SBIT
+      , SPNG_EDUP_SRGB
+      , SPNG_EDUP_BKGD
+      , SPNG_EDUP_HIST
+      , SPNG_EDUP_TRNS
+      , SPNG_EDUP_PHYS
+      , SPNG_EDUP_TIME
+      , SPNG_EDUP_OFFS
+      , SPNG_EDUP_EXIF
+      , SPNG_ECHRM
+      , SPNG_EPLTE_IDX
+      , SPNG_ETRNS_COLOR_TYPE
+      , SPNG_ETRNS_NO_PLTE
+      , SPNG_EGAMA
+      , SPNG_EICCP_NAME
+      , SPNG_EICCP_COMPRESSION_METHOD
+      , SPNG_ESBIT
+      , SPNG_ESRGB
+      , SPNG_ETEXT
+      , SPNG_ETEXT_KEYWORD
+      , SPNG_EZTXT
+      , SPNG_EZTXT_COMPRESSION_METHOD
+      , SPNG_EITXT
+      , SPNG_EITXT_COMPRESSION_FLAG
+      , SPNG_EITXT_COMPRESSION_METHOD
+      , SPNG_EITXT_LANG_TAG
+      , SPNG_EITXT_TRANSLATED_KEY
+      , SPNG_EBKGD_NO_PLTE
+      , SPNG_EBKGD_PLTE_IDX
+      , SPNG_EHIST_NO_PLTE
+      , SPNG_EPHYS
+      , SPNG_ESPLT_NAME
+      , SPNG_ESPLT_DUP_NAME
+      , SPNG_ESPLT_DEPTH
+      , SPNG_ETIME
+      , SPNG_EOFFS
+      , SPNG_EEXIF
+      , SPNG_EIDAT_TOO_SHORT
+      , SPNG_EIDAT_STREAM
+      , SPNG_EZLIB
+      , SPNG_EFILTER
+      , SPNG_EBUFSIZ
+      , SPNG_EIO
+      , SPNG_EOF
+      , SPNG_EBUF_SET
+      , SPNG_EBADSTATE
+      , SPNG_EFMT
+      , SPNG_EFLAGS
+      , SPNG_ECHUNKAVAIL
+      , SPNG_ENCODE_ONLY
+      , SPNG_EOI
+      , SPNG_ENOPLTE
+      , SPNG_ECHUNK_LIMITS
+      , SPNG_EZLIB_INIT
+      , SPNG_ECHUNK_STDLEN
+      , SPNG_EINTERNAL
+      , SPNG_ECTXTYPE
+      , SPNG_ENOSRC
+      , SPNG_ENODST
+      , SPNG_EOPSTATE
+      , SPNG_ENOTFINAL
+      )
     -- ** spng_text_type
   , SpngTextType
-  , pattern SPNG_TEXT
-  , pattern SPNG_ZTXT
-  , pattern SPNG_ITXT
+      ( SPNG_TEXT
+      , SPNG_ZTXT
+      , SPNG_ITXT
+      )
     -- ** spng_color_type
   , SpngColorType
-  , pattern SPNG_COLOR_TYPE_GRAYSCALE
-  , pattern SPNG_COLOR_TYPE_TRUECOLOR
-  , pattern SPNG_COLOR_TYPE_INDEXED
-  , pattern SPNG_COLOR_TYPE_GRAYSCALE_ALPHA
-  , pattern SPNG_COLOR_TYPE_TRUECOLOR_ALPHA
+      ( SPNG_COLOR_TYPE_GRAYSCALE
+      , SPNG_COLOR_TYPE_TRUECOLOR
+      , SPNG_COLOR_TYPE_INDEXED
+      , SPNG_COLOR_TYPE_GRAYSCALE_ALPHA
+      , SPNG_COLOR_TYPE_TRUECOLOR_ALPHA
+      )
     -- ** spng_filter
   , SpngFilter
-  , pattern SPNG_FILTER_NONE
-  , pattern SPNG_FILTER_SUB
-  , pattern SPNG_FILTER_UP
-  , pattern SPNG_FILTER_AVERAGE
-  , pattern SPNG_FILTER_PAETH
+      ( SPNG_FILTER_NONE
+      , SPNG_FILTER_SUB
+      , SPNG_FILTER_UP
+      , SPNG_FILTER_AVERAGE
+      , SPNG_FILTER_PAETH
+      )
     -- ** spng_filter_choice
   , SpngFilterChoice
-  , pattern SPNG_DISABLE_FILTERING
-  , pattern SPNG_FILTER_CHOICE_NONE
-  , pattern SPNG_FILTER_CHOICE_SUB
-  , pattern SPNG_FILTER_CHOICE_UP
-  , pattern SPNG_FILTER_CHOICE_AVG
-  , pattern SPNG_FILTER_CHOICE_PAETH
-  , pattern SPNG_FILTER_CHOICE_ALL
+      ( SPNG_DISABLE_FILTERING
+      , SPNG_FILTER_CHOICE_NONE
+      , SPNG_FILTER_CHOICE_SUB
+      , SPNG_FILTER_CHOICE_UP
+      , SPNG_FILTER_CHOICE_AVG
+      , SPNG_FILTER_CHOICE_PAETH
+      , SPNG_FILTER_CHOICE_ALL
+      )
     -- ** spng_interlace_method
   , SpngInterlaceMethod
-  , pattern SPNG_INTERLACE_NONE
-  , pattern SPNG_INTERLACE_ADAM7
+      ( SPNG_INTERLACE_NONE
+      , SPNG_INTERLACE_ADAM7
+      )
     -- ** spng_format
-    -- | Channels are always in byte-order
+    -- | Channels are always in byte-order.
+    --
+    --   'SPNG_FMT_GA8', 'SPNG_FMT_GA16' and 'SPNG_FMT_G8' are partially implemented, see documentation.
+    --
+    --   'SPNG_FMT_PNG' and 'SPNG_FMT_RAW' perform no conversion or scaling.
   , SpngFormat
-  , pattern SPNG_FMT_RGBA8
-  , pattern SPNG_FMT_RGBA16
-  , pattern SPNG_FMT_RGB8
-    -- | Partially implemented, see documentation
-  , pattern SPNG_FMT_GA8
-  , pattern SPNG_FMT_GA16
-  , pattern SPNG_FMT_G8
-    -- | No conversion or scaling
-  , pattern SPNG_FMT_PNG
-  , pattern SPNG_FMT_RAW
+      ( SPNG_FMT_RGBA8
+      , SPNG_FMT_RGBA16
+      , SPNG_FMT_RGB8
+      , SPNG_FMT_GA8
+      , SPNG_FMT_GA16
+      , SPNG_FMT_G8
+      , SPNG_FMT_PNG
+      , SPNG_FMT_RAW
+      )
     -- ** spng_ctx_flags
   , SpngCtxFlags
-  , pattern SPNG_CTX_IGNORE_ADLER32
-  , pattern SPNG_CTX_ENCODER
+      ( SPNG_CTX_IGNORE_ADLER32
+      , SPNG_CTX_ENCODER
+      )
     -- ** spng_decode_flags
   , SpngDecodeFlags
-  , pattern SPNG_DECODE_TRNS
-  , pattern SPNG_DECODE_GAMMA
-  , pattern SPNG_DECODE_USE_SBIT
-  , pattern SPNG_DECODE_PROGRESSIVE
+      ( SPNG_DECODE_TRNS
+      , SPNG_DECODE_GAMMA
+      , SPNG_DECODE_USE_SBIT
+      , SPNG_DECODE_PROGRESSIVE
+      )
     -- ** spng_crc_action
   , SpngCrcAction
-  , pattern SPNG_CRC_ERROR
-  , pattern SPNG_CRC_DISCARD
-  , pattern SPNG_CRC_USE
+      ( SPNG_CRC_ERROR
+      , SPNG_CRC_DISCARD
+      , SPNG_CRC_USE
+      )
     -- ** spng_encode_flags
   , SpngEncodeFlags
-  , pattern SPNG_ENCODE_PROGRESSIVE
-  , pattern SPNG_ENCODE_FINALIZE
+      ( SPNG_ENCODE_PROGRESSIVE
+      , SPNG_ENCODE_FINALIZE
+      )
     -- ** spng_ihdr
   , SpngIhdr (..)
     -- ** spng_plte_entry
@@ -216,25 +229,27 @@ module Codec.Image.PNG.Simple
   , SpngChunk (..)
     -- ** spng_location
   , SpngLocation
-  , pattern SPNG_AFTER_IHDR
-  , pattern SPNG_AFTER_PLTE
-  , pattern SPNG_AFTER_IDAT
+      ( SPNG_AFTER_IHDR
+      , SPNG_AFTER_PLTE
+      , SPNG_AFTER_IDAT
+      )
     -- ** spng_unknown_chunk
   , SpngUnknownChunk (..)
     -- ** spng_option
   , SpngOption
-  , pattern SPNG_KEEP_UNKNOWN_CHUNKS
-  , pattern SPNG_IMG_COMPRESSION_LEVEL
-  , pattern SPNG_IMG_WINDOW_BITS
-  , pattern SPNG_IMG_MEM_LEVEL
-  , pattern SPNG_IMG_COMPRESSION_STRATEGY
-  , pattern SPNG_TEXT_COMPRESSION_LEVEL
-  , pattern SPNG_TEXT_WINDOW_BITS
-  , pattern SPNG_TEXT_MEM_LEVEL
-  , pattern SPNG_TEXT_COMPRESSION_STRATEGY
-  , pattern SPNG_FILTER_CHOICE
-  , pattern SPNG_CHUNK_COUNT_LIMIT
-  , pattern SPNG_ENCODE_TO_BUFFER
+      ( SPNG_KEEP_UNKNOWN_CHUNKS
+      , SPNG_IMG_COMPRESSION_LEVEL
+      , SPNG_IMG_WINDOW_BITS
+      , SPNG_IMG_MEM_LEVEL
+      , SPNG_IMG_COMPRESSION_STRATEGY
+      , SPNG_TEXT_COMPRESSION_LEVEL
+      , SPNG_TEXT_WINDOW_BITS
+      , SPNG_TEXT_MEM_LEVEL
+      , SPNG_TEXT_COMPRESSION_STRATEGY
+      , SPNG_FILTER_CHOICE
+      , SPNG_CHUNK_COUNT_LIMIT
+      , SPNG_ENCODE_TO_BUFFER
+      )
     -- ** spng_malloc_fn
   , type SpngMallocFn
   , mkSpngMallocFn
