@@ -1,68 +1,64 @@
-cabal-version:      2.4
-name:               libspng
-version:            0.1.0.0
+cabal-version:      2.2
 
-description:    Please see the README on GitHub at <https://github.com/burningwitness/libspng#readme>
-homepage:       https://github.com/BurningWitness/libspng#readme
-bug-reports:    https://github.com/BurningWitness/libspng/issues
-author:         Oleksii Divak
-maintainer:     Oleksii Divak <frozenwitness@gmail.com>
-category:       Codec, Graphics, Image
-copyright:      2022 Oleksii Divak
-license:        BSD-3-Clause
-license-file:   LICENSE
-build-type:     Simple
-synopsis:       Haskell bindings for libspng
+name:               libspng
+version:            0.2.0.0
+synopsis:           Raw Haskell bindings to libspng.
+description:        Raw Haskell bindings to [libspng](https://libspng.org/docs/).
+homepage:           https://github.com/BurningWitness/libspng#readme
+bug-reports:        https://github.com/BurningWitness/libspng/issues
+author:             Oleksii Divak
+maintainer:         Oleksii Divak <frozenwitness@gmail.com>
+category:           Codec, Graphics, Image
+copyright:          2022 Oleksii Divak
+license:            BSD-3-Clause
+license-file:       LICENSE
+build-type:         Simple
+extra-source-files: libspng/*.h
 
 source-repository head
   type: git
   location: git://github.com/burningwitness/libspng.git
 
+common includes
+  include-dirs:       libspng
+
+  c-sources:          libspng/spng.c
+
 library
-  exposed-modules: Codec.Image.PNG.Simple
-                   Codec.Image.PNG.Simple.Error.Internal
-                   Codec.Image.PNG.Simple.Internal
+  import:             includes
+
+  exposed-modules:    Libspng
 
   reexported-modules: Foreign.Storable.Offset
 
-  hs-source-dirs: src
+  hs-source-dirs:     src
 
-  include-dirs: c
+  ghc-options:        -Wall
 
-  c-sources: ./c/spng.c
+  build-depends:      base            >= 4.10 && < 4.17
+                    , storable-offset >= 0.1  && < 0.2
+                    , zlib
 
-  install-includes: ./c/spng.h
+  default-language:   Haskell98
 
-  build-depends: base >= 4.10 && < 4.17
-               , bytestring >= 0.10 && < 0.12
-               , storable-offset >= 0.1 && < 0.2
-               , zlib
+test-suite static
+  import:             includes
 
-  default-language: Haskell2010
+  type:               exitcode-stdio-1.0
 
-  ghc-options: -Wall
+  main-is:            Main.hs
 
-flag example
-  description: Whether the example program should be built
-  default: False
+  other-modules:      Bind
 
-executable example
-  main-is: Main.hs
+                      Libspng
 
-  hs-source-dirs: app/example
+  hs-source-dirs:     src
+                    , test/static
 
-  build-depends: ansi-terminal >= 0.9 && < 0.12
-               , base >= 4.10 && < 4.17
-               , colour >= 2.3 && < 2.4
-               , libspng
-               , optparse-applicative >= 0.14 && <0.18
-               , storable-offset >= 0.1 && < 0.2
+  ghc-options:        -Wall
 
-  default-language: Haskell2010
+  build-depends:      base            >= 4.10 && < 4.17
+                    , storable-offset >= 0.1  && < 0.2
+                    , zlib
 
-  ghc-options: -Wall
-
-  if flag (example)
-    buildable: True
-  else
-    buildable: False
+  default-language:   Haskell98
