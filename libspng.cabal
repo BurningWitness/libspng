@@ -19,7 +19,17 @@ source-repository head
   type: git
   location: git://github.com/burningwitness/libspng.git
 
+flag ccall
+  description: Use the ccall call convention.
+  default: False
+
+flag stdcall
+  description: Use the stdcall call convention (takes precedence over the ccall flag).
+  default: False
+
 common includes
+  install-includes:   libspng/spng.h
+
   include-dirs:       libspng
 
   c-sources:          libspng/spng.c
@@ -39,26 +49,11 @@ library
                     , storable-offset >= 0.1  && < 0.2
                     , zlib
 
-  default-language:   Haskell98
-
-test-suite static
-  import:             includes
-
-  type:               exitcode-stdio-1.0
-
-  main-is:            Main.hs
-
-  other-modules:      Bind
-
-                      Libspng
-
-  hs-source-dirs:     src
-                    , test/static
-
-  ghc-options:        -Wall
-
-  build-depends:      base            >= 4.10 && < 4.17
-                    , storable-offset >= 0.1  && < 0.2
-                    , zlib
+  if flag(stdcall)
+    cpp-options:      -DCALLCV=stdcall
+  elif flag(ccall)
+    cpp-options:      -DCALLCV=ccall
+  else
+    cpp-options:      -DCALLCV=capi
 
   default-language:   Haskell98

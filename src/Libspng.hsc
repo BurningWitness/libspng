@@ -1,4 +1,6 @@
-{-# LANGUAGE DataKinds
+{-# LANGUAGE CApiFFI
+           , CPP
+           , DataKinds
            , DuplicateRecordFields
            , EmptyDataDecls
            , FlexibleInstances
@@ -1550,106 +1552,106 @@ type SpngRwFn = Ptr SpngCtx    -- ^ ctx
 
 
 
-foreign import ccall "spng_ctx_new"
+foreign import CALLCV "spng.h spng_ctx_new"
   spng_ctx_new
     :: #{type int}      -- ^ flags
     -> IO (Ptr SpngCtx)
 
-foreign import ccall "spng_ctx_new2"
+foreign import CALLCV "spng.h spng_ctx_new2"
   spng_ctx_new2
     :: Ptr SpngAlloc -- ^ alloc
     -> #{type int}   -- ^ flags
     -> IO (Ptr SpngCtx)
 
-foreign import ccall "spng_ctx_free"
+foreign import CALLCV "spng.h spng_ctx_free"
   spng_ctx_free
     :: Ptr SpngCtx -- ^ ctx
     -> IO ()
 
-foreign import ccall "spng_set_png_buffer"
+foreign import CALLCV "spng.h spng_set_png_buffer"
   spng_set_png_buffer
     :: Ptr SpngCtx    -- ^ ctx
     -> Ptr ()         -- ^ const buf
     -> #{type size_t} -- ^ size
     -> IO #type int
 
-foreign import ccall "spng_set_png_stream"
+foreign import CALLCV "spng.h spng_set_png_stream"
   spng_set_png_stream
     :: Ptr SpngCtx     -- ^ ctx
     -> FunPtr SpngRwFn -- ^ rw_func
     -> Ptr ()          -- ^ user
     -> IO #type int
 
-foreign import ccall "spng_set_png_file"
+foreign import CALLCV "spng.h spng_set_png_file"
   spng_set_png_file
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr CFile    -- ^ file
     -> IO #type int
 
-foreign import ccall "spng_get_png_buffer"
+foreign import CALLCV "spng.h spng_get_png_buffer"
   spng_get_png_buffer
     :: Ptr SpngCtx        -- ^ ctx
     -> Ptr #{type size_t} -- ^ len
     -> Ptr SpngErrno      -- ^ error
     -> IO (Ptr ())
 
-foreign import ccall "spng_set_image_limits"
+foreign import CALLCV "spng.h spng_set_image_limits"
   spng_set_image_limits
     :: Ptr SpngCtx      -- ^ ctx
     -> #{type uint32_t} -- ^ width
     -> #{type uint32_t} -- ^ height
     -> IO #type int
 
-foreign import ccall "spng_get_image_limits"
+foreign import CALLCV "spng.h spng_get_image_limits"
   spng_get_image_limits
     :: Ptr SpngCtx          -- ^ ctx
     -> Ptr #{type uint32_t} -- ^ width
     -> Ptr #{type uint32_t} -- ^ height
     -> IO #type int
 
-foreign import ccall "spng_set_chunk_limits"
+foreign import CALLCV "spng.h spng_set_chunk_limits"
   spng_set_chunk_limits
     :: Ptr SpngCtx    -- ^ ctx
     -> #{type size_t} -- ^ chunk_size
     -> #{type size_t} -- ^ cache_size
     -> IO #type int
 
-foreign import ccall "spng_get_chunk_limits"
+foreign import CALLCV "spng.h spng_get_chunk_limits"
   spng_get_chunk_limits
     :: Ptr SpngCtx        -- ^ ctx
     -> Ptr #{type size_t} -- ^ chunk_size
     -> Ptr #{type size_t} -- ^ cache_size
     -> IO #type int
 
-foreign import ccall "spng_set_crc_action"
+foreign import CALLCV "spng.h spng_set_crc_action"
   spng_set_crc_action
     :: Ptr SpngCtx -- ^ ctx
     -> #{type int} -- ^ critical
     -> #{type int} -- ^ ancillary
     -> IO #type int
 
-foreign import ccall "spng_set_option"
+foreign import CALLCV "spng.h spng_set_option"
   spng_set_option
     :: Ptr SpngCtx  -- ^ ctx
     -> SpngOption   -- ^ option
     -> #{type int}  -- ^ value
     -> IO #type int
 
-foreign import ccall "spng_get_option"
+foreign import CALLCV "spng.h spng_get_option"
   spng_get_option
     :: Ptr SpngCtx     -- ^ ctx
     -> SpngOption      -- ^ option
     -> Ptr #{type int} -- ^ value
     -> IO #type int
 
-foreign import ccall "spng_decoded_image_size"
+foreign import CALLCV "spng.h spng_decoded_image_size"
   spng_decoded_image_size
     :: Ptr SpngCtx        -- ^ ctx
     -> SpngFormat         -- ^ fmt
     -> Ptr #{type size_t} -- ^ len
     -> IO #type int
 
-foreign import ccall "spng_decode_image"
+foreign import CALLCV "spng.h spng_decode_image"
   spng_decode_image
     :: Ptr SpngCtx     -- ^ ctx
     -> Ptr ()          -- ^ out
@@ -1658,32 +1660,32 @@ foreign import ccall "spng_decode_image"
     -> SpngDecodeFlags -- ^ flags
     -> IO #type int
 
-foreign import ccall "spng_decode_scanline"
+foreign import CALLCV "spng.h spng_decode_scanline"
   spng_decode_scanline
     :: Ptr SpngCtx    -- ^ ctx
     -> Ptr ()         -- ^ out
     -> #{type size_t} -- ^ len
     -> IO #type int
 
-foreign import ccall "spng_decode_row"
+foreign import CALLCV "spng.h spng_decode_row"
   spng_decode_row
     :: Ptr SpngCtx    -- ^ ctx
     -> Ptr ()         -- ^ out
     -> #{type size_t} -- ^ len
     -> IO #type int
 
-foreign import ccall "spng_decode_chunks"
+foreign import CALLCV "spng.h spng_decode_chunks"
   spng_decode_chunks
     :: Ptr SpngCtx -- ^ ctx
     -> IO #type int
 
-foreign import ccall "spng_get_row_info"
+foreign import CALLCV "spng.h spng_get_row_info"
   spng_get_row_info
     :: Ptr SpngCtx     -- ^ ctx
     -> Ptr SpngRowInfo -- ^ row_info
     -> IO #type int
 
-foreign import ccall "spng_encode_image"
+foreign import CALLCV "spng.h spng_encode_image"
   spng_encode_image
     :: Ptr SpngCtx     -- ^ ctx
     -> Ptr ()          -- ^ const img
@@ -1692,264 +1694,264 @@ foreign import ccall "spng_encode_image"
     -> SpngEncodeFlags -- ^ flags
     -> IO #type int
 
-foreign import ccall "spng_encode_scanline"
+foreign import CALLCV "spng.h spng_encode_scanline"
   spng_encode_scanline
     :: Ptr SpngCtx    -- ^ ctx
     -> Ptr ()         -- ^ const scanline
     -> #{type size_t} -- ^ len
     -> IO #type int
 
-foreign import ccall "spng_encode_row"
+foreign import CALLCV "spng.h spng_encode_row"
   spng_encode_row
     :: Ptr SpngCtx    -- ^ ctx
     -> Ptr ()         -- ^ const row
     -> #{type size_t} -- ^ len
     -> IO #type int
 
-foreign import ccall "spng_encode_chunks"
+foreign import CALLCV "spng.h spng_encode_chunks"
   spng_encode_chunks
     :: Ptr SpngCtx    -- ^ ctx
     -> IO #type int
 
-foreign import ccall "spng_get_ihdr"
+foreign import CALLCV "spng.h spng_get_ihdr"
   spng_get_ihdr
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngIhdr -- ^ ihdr
     -> IO #type int
 
-foreign import ccall "spng_get_plte"
+foreign import CALLCV "spng.h spng_get_plte"
   spng_get_plte
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngPlte -- ^ plte
     -> IO #type int
 
-foreign import ccall "spng_get_trns"
+foreign import CALLCV "spng.h spng_get_trns"
   spng_get_trns
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngTrns -- ^ trns
     -> IO #type int
 
-foreign import ccall "spng_get_chrm"
+foreign import CALLCV "spng.h spng_get_chrm"
   spng_get_chrm
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngChrm -- ^ chrm
     -> IO #type int
 
-foreign import ccall "spng_get_chrm_int"
+foreign import CALLCV "spng.h spng_get_chrm_int"
   spng_get_chrm_int
     :: Ptr SpngCtx     -- ^ ctx
     -> Ptr SpngChrmInt -- ^ chrm_int
     -> IO #type int
 
-foreign import ccall "spng_get_gama"
+foreign import CALLCV "spng.h spng_get_gama"
   spng_get_gama
     :: Ptr SpngCtx        -- ^ ctx
     -> Ptr #{type double} -- ^ gamma
     -> IO #type int
 
-foreign import ccall "spng_get_gama_int"
+foreign import CALLCV "spng.h spng_get_gama_int"
   spng_get_gama_int
     :: Ptr SpngCtx          -- ^ ctx
     -> Ptr #{type uint32_t} -- ^ gama_int
     -> IO #type int
 
-foreign import ccall "spng_get_iccp"
+foreign import CALLCV "spng.h spng_get_iccp"
   spng_get_iccp
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngIccp -- ^ iccp
     -> IO #type int
 
-foreign import ccall "spng_get_sbit"
+foreign import CALLCV "spng.h spng_get_sbit"
   spng_get_sbit
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngSbit -- ^ sbit
     -> IO #type int
 
-foreign import ccall "spng_get_srgb"
+foreign import CALLCV "spng.h spng_get_srgb"
   spng_get_srgb
     :: Ptr SpngCtx         -- ^ ctx
     -> Ptr #{type uint8_t} -- ^ rendering_intent
     -> IO #type int
 
-foreign import ccall "spng_get_text"
+foreign import CALLCV "spng.h spng_get_text"
   spng_get_text
     :: Ptr SpngCtx          -- ^ ctx
     -> Ptr SpngText         -- ^ text
     -> Ptr #{type uint32_t} -- ^ n_text
     -> IO #type int
 
-foreign import ccall "spng_get_bkgd"
+foreign import CALLCV "spng.h spng_get_bkgd"
   spng_get_bkgd
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngBkgd -- ^ bkgd
     -> IO #type int
 
-foreign import ccall "spng_get_hist"
+foreign import CALLCV "spng.h spng_get_hist"
   spng_get_hist
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngHist -- ^ hist
     -> IO #type int
 
-foreign import ccall "spng_get_phys"
+foreign import CALLCV "spng.h spng_get_phys"
   spng_get_phys
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngPhys -- ^ phys
     -> IO #type int
 
-foreign import ccall "spng_get_splt"
+foreign import CALLCV "spng.h spng_get_splt"
   spng_get_splt
     :: Ptr SpngCtx          -- ^ ctx
     -> Ptr SpngSplt         -- ^ splt
     -> Ptr #{type uint32_t} -- ^ n_splt
     -> IO #type int
 
-foreign import ccall "spng_get_time"
+foreign import CALLCV "spng.h spng_get_time"
   spng_get_time
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngTime -- ^ time
     -> IO #type int
 
-foreign import ccall "spng_get_unknown_chunks"
+foreign import CALLCV "spng.h spng_get_unknown_chunks"
   spng_get_unknown_chunks
     :: Ptr SpngCtx          -- ^ ctx
     -> Ptr SpngUnknownChunk -- ^ chunks
     -> Ptr #{type uint32_t} -- ^ n_chunks
     -> IO #type int
 
-foreign import ccall "spng_get_offs"
+foreign import CALLCV "spng.h spng_get_offs"
   spng_get_offs
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngOffs -- ^ offs
     -> IO #type int
 
-foreign import ccall "spng_get_exif"
+foreign import CALLCV "spng.h spng_get_exif"
   spng_get_exif
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngExif -- ^ exif
     -> IO #type int
 
-foreign import ccall "spng_set_ihdr"
+foreign import CALLCV "spng.h spng_set_ihdr"
   spng_set_ihdr
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngIhdr -- ^ ihdr
     -> IO #type int
 
-foreign import ccall "spng_set_plte"
+foreign import CALLCV "spng.h spng_set_plte"
   spng_set_plte
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngPlte -- ^ plte
     -> IO #type int
 
-foreign import ccall "spng_set_trns"
+foreign import CALLCV "spng.h spng_set_trns"
   spng_set_trns
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngTrns -- ^ trns
     -> IO #type int
 
-foreign import ccall "spng_set_chrm"
+foreign import CALLCV "spng.h spng_set_chrm"
   spng_set_chrm
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngChrm -- ^ chrm
     -> IO #type int
 
-foreign import ccall "spng_set_chrm_int"
+foreign import CALLCV "spng.h spng_set_chrm_int"
   spng_set_chrm_int
     :: Ptr SpngCtx     -- ^ ctx
     -> Ptr SpngChrmInt -- ^ chrm_int
     -> IO #type int
 
-foreign import ccall "spng_set_gama"
+foreign import CALLCV "spng.h spng_set_gama"
   spng_set_gama
     :: Ptr SpngCtx    -- ^ ctx
     -> #{type double} -- ^ gamma
     -> IO #type int
 
-foreign import ccall "spng_set_gama_int"
+foreign import CALLCV "spng.h spng_set_gama_int"
   spng_set_gama_int
     :: Ptr SpngCtx      -- ^ ctx
     -> #{type uint32_t} -- ^ gamma
     -> IO #type int
 
-foreign import ccall "spng_set_iccp"
+foreign import CALLCV "spng.h spng_set_iccp"
   spng_set_iccp
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngIccp -- ^ iccp
     -> IO #type int
 
-foreign import ccall "spng_set_sbit"
+foreign import CALLCV "spng.h spng_set_sbit"
   spng_set_sbit
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngSbit -- ^ sbit
     -> IO #type int
 
-foreign import ccall "spng_set_srgb"
+foreign import CALLCV "spng.h spng_set_srgb"
   spng_set_srgb
     :: Ptr SpngCtx     -- ^ ctx
     -> #{type uint8_t} -- ^ rendering_intent
     -> IO #type int
 
-foreign import ccall "spng_set_text"
+foreign import CALLCV "spng.h spng_set_text"
   spng_set_text
     :: Ptr SpngCtx      -- ^ ctx
     -> Ptr SpngText     -- ^ text
     -> #{type uint32_t} -- ^ n_text
     -> IO #type int
 
-foreign import ccall "spng_set_bkgd"
+foreign import CALLCV "spng.h spng_set_bkgd"
   spng_set_bkgd
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngBkgd -- ^ bkgd
     -> IO #type int
 
-foreign import ccall "spng_set_hist"
+foreign import CALLCV "spng.h spng_set_hist"
   spng_set_hist
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngHist -- ^ hist
     -> IO #type int
 
-foreign import ccall "spng_set_phys"
+foreign import CALLCV "spng.h spng_set_phys"
   spng_set_phys
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngPhys -- ^ phys
     -> IO #type int
 
-foreign import ccall "spng_set_splt"
+foreign import CALLCV "spng.h spng_set_splt"
   spng_set_splt
     :: Ptr SpngCtx      -- ^ ctx
     -> Ptr SpngSplt     -- ^ splt
     -> #{type uint32_t} -- ^ n_splt
     -> IO #type int
 
-foreign import ccall "spng_set_time"
+foreign import CALLCV "spng.h spng_set_time"
   spng_set_time
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngTime -- ^ time
     -> IO #type int
 
-foreign import ccall "spng_set_unknown_chunks"
+foreign import CALLCV "spng.h spng_set_unknown_chunks"
   spng_set_unknown_chunks
     :: Ptr SpngCtx          -- ^ ctx
     -> Ptr SpngUnknownChunk -- ^ chunks
     -> #{type uint32_t}     -- ^ n_chunks
     -> IO #type int
 
-foreign import ccall "spng_set_offs"
+foreign import CALLCV "spng.h spng_set_offs"
   spng_set_offs
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngOffs -- ^ offs
     -> IO #type int
 
-foreign import ccall "spng_set_exif"
+foreign import CALLCV "spng.h spng_set_exif"
   spng_set_exif
     :: Ptr SpngCtx  -- ^ ctx
     -> Ptr SpngExif -- ^ exif
     -> IO #type int
 
-foreign import ccall "spng_strerror"
+foreign import CALLCV "spng.h spng_strerror"
   spng_strerror
     :: #{type int}           -- ^ err
     -> IO (Ptr #{type char}) -- ^ const
 
-foreign import ccall "spng_version_string"
+foreign import CALLCV "spng.h spng_version_string"
   spng_version_string
     :: IO (Ptr #{type char}) -- ^ const
