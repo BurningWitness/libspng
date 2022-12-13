@@ -27,16 +27,7 @@ flag stdcall
   description: Use the stdcall call convention (takes precedence over the ccall flag).
   default: False
 
-common includes
-  install-includes:   libspng/spng.h
-
-  include-dirs:       libspng
-
-  c-sources:          libspng/spng.c
-
 library
-  import:             includes
-
   exposed-modules:    Libspng
 
   reexported-modules: Foreign.Storable.Offset
@@ -45,9 +36,15 @@ library
 
   ghc-options:        -Wall
 
-  build-depends:      base            >= 4.10 && < 4.17
+  build-depends:      base            >= 4.10 && < 5
                     , storable-offset >= 0.1  && < 0.2
                     , zlib
+
+  install-includes:   spng.h
+
+  include-dirs:       libspng
+
+  c-sources:          libspng/spng.c
 
   if flag(stdcall)
     cpp-options:      -DCALLCV=stdcall
